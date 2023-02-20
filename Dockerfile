@@ -3,15 +3,21 @@ LABEL maintainer="wwchesson"
 
 ENV PYTHONUNBUFFERED 1
 
+# copy requirements to the temp directory
 COPY ./requirements.txt /tmp/requirements.txt  
+COPY ./requirements.dev.text /tmp/requirements.dev.txt
 COPY ./app /app
 WORKDIR /app
 #expose is for port
 EXPOSE 8000 
 
+ARG DEV=false
 RUN python -m venv /py && \
     /py/bin/pip install --upgrade pip && \
     /py/bin/pip install -r /tmp/requirements.txt && \
+    if [ $DEV = "true"]; \
+        then /py/bin/pip install -r /tmp/requirements.dev.txt ; \
+    fi && \
     rm -rf /tmp && \
     adduser \
         --disabled-password \
