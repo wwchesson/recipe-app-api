@@ -1,6 +1,6 @@
 """
 
-Database models.
+Database models
 """
 
 from django.db import models
